@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Subscriptions{% endblock title %}
+
+{% block content %}
+    <div class="row pt-5 d-flex justify-content-center">
+        {% if subscriptions == [] %}
+            <p>You are not subscribed to any topics.</p>
+        {% else %}
+            <div class="col-lg-8 col-lg-offset-2">
+                <table class="table">
+                    <tbody>
+                       {% for subscription in subscriptions %}
+                            <tr>
+                                <td><a href="/topic/{{ subscription.topic_id }}/details">{{ subscription.topic_title }}</a></td>
+                                <td>
+                                    <form method="post" action="/{{ subscription.key.id() }}/unsubscribe">
+                                        <button type="submit" class="btn btn-danger">Unsubscribe</button>
+                                    </form>
+                                </td>
+                            </tr>
+                       {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Comments{% endblock title %}
+
+{% block content %}
+
+{% for comment in comments %}
+    <div class="row d-flex justify-content-center pt-4">
+        <div class="col-md-9 col-md-offset-2">
+            <div class="card border-info mb-3">
+                <div class="card-header bg-info mb-3 text-white">
+                    <label class="card-title">{{ comment.topic_title }} - {{ comment.author_email }}
+                        on {{ comment.created.strftime("%d.%m.%Y at %H:%M") }}</label>
+                </div>
+
+                <div class="card-body">
+                    <p>{{ comment.content }}</p>
+
+                    {% if user %}
+                        {% if comment.author_email == user.email() %}
+                            <form action="/comment/{{ comment.key.id() }}/delete" method="post">
+                                <button type="submit" class="btn btn-danger">Delete comment</button>
+                            </form>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+{% endblock content %}

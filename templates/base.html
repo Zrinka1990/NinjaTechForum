@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>
+        {% block title %}{% endblock title %} - Ninja Tech Forum
+    </title>
+
+    <!-- Bootstrap -->
+    <link href="/assets/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <!-- Lightbox -->
+    <link href="/assets/lightbox/css/lightbox.css" rel="stylesheet">
+</head>
+  <body>
+
+    <div class="container">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">Ninja Tech Forum</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/gallery">About <span class="sr-only">(current)</span></a>
+            </li>
+              <li class="nav-item"><a class="nav-link" href="/topic/add">Add new topic</a></li>
+              <li class="nav-item"><a class="nav-link" href="/comment/user">Your comments</a></li>
+              <li class="nav-item"><a class="nav-link" href="/subscriptions/user">Subscribed topics</a></li>
+              {% if logout_url %}
+                <li class="nav-item"><a class="nav-link" href="#">{{ user.email() }}</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ logout_url }}">Logout</a></li>
+              {% elif login_url %}
+                <li class="nav-item"><a class="nav-link" href="{{ login_url }}">Login</a></li>
+              {% endif %}
+          </ul>
+            {% if subscribed %}
+                 <a class="btn btn-outline-info my-2 my-sm-0" href="#" data-toggle="modal"
+                               data-target="#unsubscribeModal">Unsubscribe</a>
+
+                    <!-- Modal - delete comment -->
+                    <div class="modal fade" id="unsubscribeModal" tabindex="-1" role="dialog"
+                         aria-labelledby="unsubscribeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <form method="post" action="/user/unsubscribe">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="unsubscribeModalLabel">
+                                            Unsubscribe</h4>
+                                    </div>
+
+                                    <input type="hidden" name="csrf_token" value="{{csrf_token}}">
+
+                                    <div class="modal-body">
+                                        Are you sure you want to unsubscribe from this forum?
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-danger">Yes, unsubscribe</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+            {% else %}
+
+                <span>
+                    <a class="btn btn-outline-info my-2 my-sm-0" href="#" data-toggle="modal" data-target="#subscribeModal">
+                        Subscribe to forum</a>
+                </span>
+                <!-- Modal - delete topic -->
+                <div class="modal fade" id="subscribeModal" tabindex="-1" role="dialog"
+                     aria-labelledby="subscribeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <form method="post" action="/user/subscribe">
+                    <button type="submit" class="btn btn-outline-info my-2 my-sm-0">Subscribe to forum</button>
+
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"
+                                        aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="deleteTopicLabel">Subscribe to forum</h4>
+                            </div>
+
+                            <input type="hidden" name="csrf_token" value="{{csrf_token}}">
+
+                            <div class="modal-body">
+                                <p>
+                                    By subscribing to this forum you will receive emails notifying you about hottest
+                                    topics.
+                                </p>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Subscribe</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">
+                                    Cancel</button>
+                            </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+      </nav>
+
+        {% if not cookies %}
+            <div class="alert alert-danger" role="alert">
+                Hey, we use cookies. Do you accept them? :)
+                <form action="/set-cookie" method="post">
+                    <button type="submit" class="btn btn-success btn-xs">I accept</button>
+                </form>
+            </div>
+        {% endif %}
+
+      {% block content %}
+      {% endblock content %}
+    </div>
+
+     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/assets/bootstrap/js/bootstrap.js"></script>
+    <!-- Lightbox JS -->
+    <script src="/assets/lightbox/js/lightbox.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    {% block scripts %}
+    {% endblock scripts %}
+  </body>
+</html>
