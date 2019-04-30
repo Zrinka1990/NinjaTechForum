@@ -17,7 +17,7 @@ class EmailNewCommentWorker(BaseHandler):
                               <body>
                                    <p>
                                    Your topic "{0}" received a new comment. Click on
-                                   <a href="http://ninjatechforum-237615.appspot.com/topic/{1}/details">
+                                   <a href="http://ninjatechforum2-239216.appspot.com/topic/{1}/details">
                                    this link</a> to see it. 
                                    </p> 
                               </body>
@@ -42,7 +42,7 @@ class EmailTopicSubscriberWorker(BaseHandler):
                                  <body>
                                       <p>
                                       The topic "{0}" you are subscribed to received a new comment. Click on
-                                      <a href="http://ninjatechforum-237615.appspot.com/topic/{1}/details">
+                                      <a href="http://ninjatechforum2-239216.appspot.com/topic/{1}/details">
                                       this link</a> to see it!
                                       </p>
                                  </body>
